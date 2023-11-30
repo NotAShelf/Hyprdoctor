@@ -19,3 +19,10 @@ jobs:
 
       - name: Build with Make
         run: make all
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: Hyprdoctor
+
+          
