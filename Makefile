@@ -1,21 +1,19 @@
-# compiler settings
 CXX = g++
 CXXFLAGS = -Wall -std=c++11
+TARGET = Hyprdoctor
+SRCS = main.cpp src/utils/environment.cpp src/utils/file_parser.cpp
+OBJS = $(SRCS:.cpp=.o)
 
-# general variables
-TARGET = main
-SRC = main.cpp
-OBJ = $(SRC:.cpp=.o)
+all: $(TARGET);
 
-# Default target
-all: $(TARGET)
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
-# compile
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+run:
+	./$(TARGET)
 
-# cleanup
 .PHONY: clean
 clean:
-	rm -f $(OBJ) $(TARGET)
-
+	rm -f $(OBJS) $(TARGET)

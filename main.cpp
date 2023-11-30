@@ -1,57 +1,16 @@
-#include <cstdlib>
-#include <fstream>
+#include "src/utils/environment.h"
+#include "src/utils/file_parser.h"
 #include <iostream>
-#include <string>
-#include <vector>
-
-// value of an environment variable
-const char *getEnvVar(const char *name) {
-  const char *value = std::getenv(name);
-  if (value == nullptr) {
-    throw std::runtime_error(std::string("Environment variable ") + name +
-                             " is not set.");
-  }
-
-  return value;
-}
-
-// print the value of an environment variable
-void printEnvVar(const char *name) {
-  const char *value = getEnvVar(name);
-  std::cout << name << "=" << value << std::endl;
-}
-
-// read the logs and return the lines that start with [ERR]
-// which are standard errors
-std::vector<std::string> readErrLines(const std::string &filePath) {
-  std::ifstream file(filePath);
-  if (!file.is_open()) {
-    throw std::runtime_error("Unable to open file at " + filePath);
-  }
-
-  std::string line;
-  std::vector<std::string> errLines;
-
-  while (std::getline(file, line)) {
-    if (line.substr(0, 5) == "[ERR]") {
-      errLines.push_back(line);
-    }
-  }
-
-  file.close();
-  return errLines;
-}
 
 int main() {
-  const char *envVar = getEnvVar("HYPRLAND_INSTANCE_SIGNATURE");
-  std::cout << "Variable HYPRLAND_INSTANCE_SIGNATURE is set to " << envVar
-            << std::endl;
+  const char *envVar = getEnvVar("PATH");
 
+  // try opening the log file
   try {
     std::string filePath = "/tmp/hypr/" + std::string(envVar);
     std::vector<std::string> errLines = readErrLines(filePath);
 
-    // print error lines
+    // print [ERR] lines, which are caught errors that we prioritize
     for (const auto &line : errLines) {
       std::cout << line << std::endl;
     }
