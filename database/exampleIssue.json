@@ -1,0 +1,7 @@
+{
+  "ID": 1,
+  "name": "Example Issue",
+  "resources": ["resource1", "resource2", "resource3"],
+  "description": "This is a long string that can contain multiple sentences or paragraphs.",
+  "errors": ["error1", "error2", "error3"]
+}
